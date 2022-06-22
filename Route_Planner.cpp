@@ -68,7 +68,7 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
-
+/*
 RouteModel::Node *RoutePlanner::NextNode() {    // This is the function where I am having the most trouble I think.
                                                 // I will go through what I am thinking som you can understand.
     float lowestSumValue;   // Variable used for storing the lowest sum og h and g value.
@@ -92,7 +92,40 @@ RouteModel::Node *RoutePlanner::NextNode() {    // This is the function where I 
     this->open_list.erase(this->open_list.begin()+indexOfNode); // Removing the node which is chosen as the nextstep from the open_list.
     return ptrLowestSum;
 }
+*/
 
+/*
+RouteModel::Node* RoutePlanner::NextNode() {
+
+    std::sort(this->open_list.begin(), this->open_list.end(), compare);
+
+    RouteModel::Node* lowestFValNode = this->open_list.back();
+    this->open_list.pop_back();
+
+    return lowestFValNode;
+
+}
+
+
+bool compare(const RouteModel::Node* node_a, const RouteModel::Node* node_b) {
+
+    return (node_a->g_value + node_a->h_value) < (node_b->g_value + node_b->h_value);
+
+}
+*/
+
+RouteModel::Node* RoutePlanner::NextNode() {
+
+    std::sort(open_list.begin(), open_list.end(), [](const RouteModel::Node* a, const RouteModel::Node* b) -> bool
+    {
+        return a->g_value + a->h_value > b->g_value + b->h_value;
+    });
+
+    RouteModel::Node* next_node = open_list.back();
+    open_list.pop_back();
+    return next_node;
+
+}
 
 // TODO 6: Complete the ConstructFinalPath method to return the final path found from your A* search.
 // Tips:
