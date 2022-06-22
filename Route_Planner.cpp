@@ -68,61 +68,16 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
-/*
-RouteModel::Node *RoutePlanner::NextNode() {    // This is the function where I am having the most trouble I think.
-                                                // I will go through what I am thinking som you can understand.
-    float lowestSumValue;   // Variable used for storing the lowest sum og h and g value.
-    RouteModel::Node* ptrLowestSum; // declare a object which will be used to store the address of the node with the lowest sum.
-    int indexOfNode;    // Declaration of variable used to remember the position of the right node in the open_list.
-    int i = -1;  // Initializing an iterator.
-
-    for (RouteModel::Node* node : this->open_list)  // Iterating over the nodes in the open_list.
-    {
-        i = i + 1;    // Adding 1 for every iteration. Used to keep track of position in open_list.
-        float sumValue = node->g_value + node->h_value; // Calculate the sum which will determine the appropriate neighboring node.                                      
-        if (sumValue < lowestSumValue)  // if-statement for checking if the current sum is lower than the lowest sum for this session.
-        {
-            lowestSumValue = sumValue;  // Setting the lowest sum.
-            ptrLowestSum = node;    // Setting the pointer to the node with the lowest sum.
-            indexOfNode = i;    // The index in the open_list vector for the node with the lowest sum.
-            
-        }
-    }
-
-    this->open_list.erase(this->open_list.begin()+indexOfNode); // Removing the node which is chosen as the nextstep from the open_list.
-    return ptrLowestSum;
-}
-*/
-
-/*
-RouteModel::Node* RoutePlanner::NextNode() {
-
-    std::sort(this->open_list.begin(), this->open_list.end(), compare);
-
-    RouteModel::Node* lowestFValNode = this->open_list.back();
-    this->open_list.pop_back();
-
-    return lowestFValNode;
-
-}
-
-
-bool compare(const RouteModel::Node* node_a, const RouteModel::Node* node_b) {
-
-    return (node_a->g_value + node_a->h_value) < (node_b->g_value + node_b->h_value);
-
-}
-*/
 
 RouteModel::Node* RoutePlanner::NextNode() {
 
     std::sort(open_list.begin(), open_list.end(), [](const RouteModel::Node* a, const RouteModel::Node* b) -> bool
     {
-        return a->g_value + a->h_value > b->g_value + b->h_value;
-    });
+        return a->g_value + a->h_value > b->g_value + b->h_value;   // Evaluating which node is the best option
+    });                                                             // for the most optimal route. Sorting accordingly.
 
-    RouteModel::Node* next_node = open_list.back();
-    open_list.pop_back();
+    RouteModel::Node* next_node = open_list.back(); //  The most compatible node.
+    open_list.pop_back(); //    Removing the chosen node.
     return next_node;
 
 }
